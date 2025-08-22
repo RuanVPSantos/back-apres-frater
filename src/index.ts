@@ -22,7 +22,7 @@ setupHealthCheck();
 
 app.register(multipart, {
     limits: {
-        fileSize: 1024 * 1024 * 10, // 10mb
+        fileSize: 1024 * 1024 * 30, // 30mb
     },
 });
 

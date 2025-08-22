@@ -28,8 +28,7 @@ export default class ObraImageServices {
             const randomIndex = Math.floor(Math.random() * length);
             const randomObraImage = obraImages[randomIndex];
             const imageUrl = await this.minioClient.downloadFile(this.bucketName, randomObraImage.imageUrl);
-            randomObraImage.imageUrl = imageUrl;
-            return { ...randomObraImage };
+            return { ...randomObraImage, imageUrl };
         } catch (error) {
             throw error;
         }
