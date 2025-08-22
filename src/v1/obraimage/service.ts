@@ -27,7 +27,7 @@ export default class ObraImageServices {
             const length = obraImages.length;
             const randomIndex = Math.floor(Math.random() * length);
             const randomObraImage = obraImages[randomIndex];
-            const imageUrl = await this.minioClient.downloadFile(this.bucketName, randomObraImage.imageUrl);
+            const imageUrl = `${process.env.API_BASE_URL || 'http://localhost:3003'}/obraimage/image/${randomObraImage.imageUrl}`;
             return { ...randomObraImage, imageUrl };
         } catch (error) {
             throw error;
@@ -36,7 +36,7 @@ export default class ObraImageServices {
     async getObraImageById(id: number): Promise<ObraImageInterface> {
         try {
             const obraImage = await this.model.getObraImageById(id);
-            const imageUrl = await this.minioClient.downloadFile(this.bucketName, obraImage.imageUrl);
+            const imageUrl = `${process.env.API_BASE_URL || 'http://localhost:3003'}/obraimage/image/${obraImage.imageUrl}`;
             return { ...obraImage, imageUrl };
         } catch (error) {
             throw error;

@@ -49,10 +49,11 @@ class MinioClient {
 
     async downloadFile(bucketName: string, fileName: string) {
         try {
-            const file = await this.client.presignedUrl('GET', bucketName, fileName);
-            return file;
+            const stream = await this.client.getObject(bucketName, fileName);
+            return stream;
         } catch (err) {
             console.error('Error downloading file:', err);
+            throw err;
         }
     }
 

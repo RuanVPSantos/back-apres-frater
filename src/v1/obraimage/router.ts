@@ -3,10 +3,48 @@ import { checkLogin } from '../utils/check.login';
 import { ObraImageInputSchemaJson, ObraImageUpdateInputSchemaJson } from './schemas';
 import { ObraImageInput, ObraImageUpdateInput } from './interface';
 import ObraImageController from './controller';
+import MinioClient from '../utils/minio.client';
 
 const modelController = new ObraImageController();
+const minioClient = new MinioClient();
+const bucketName = process.env.MINIO_BUCKET_NAME || 'frater-apresentacao-imagens';
 
 async function ObraImageRouter(fastify: FastifyInstance) {
+    // Endpoint para servir imagens
+    fastify.get('/image/:filename',
+        async (request: FastifyRequest, reply: FastifyReply) => {
+            try {
+                const { filename } = request.params as { filename: string };
+                const imageStream = await minioClient.downloadFile(bucketName, filename);
+                
+                // Define o content-type baseado na extensão do arquivo
+                const extension = filename.split('.').pop()?.toLowerCase();
+                let contentType = 'application/octet-stream';
+                
+                switch (extension) {
+                    case 'jpg':
+                    case 'jpeg':
+                        contentType = 'image/jpeg';
+                        break;
+                    case 'png':
+                        contentType = 'image/png';
+                        break;
+                    case 'gif':
+                        contentType = 'image/gif';
+                        break;
+                    case 'webp':
+                        contentType = 'image/webp';
+                        break;
+                }
+                
+                reply.type(contentType);
+                return reply.send(imageStream);
+            } catch (error) {
+                console.error('Error serving image:', error);
+                return reply.status(404).send({ message: 'Image not found' });
+            }
+        }
+    );
     fastify.get('/all',
         async (request: FastifyRequest, reply: FastifyReply) => {
             try {
