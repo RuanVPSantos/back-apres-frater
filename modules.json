@@ -1,0 +1,101 @@
+{
+  "project": "frater_fotos_back",
+  "stack": "fastify+prisma+ts",
+  "tenant": "single",
+  "auth": "none",
+  "back": {
+    "entryPoint": "src/index.ts",
+    "modules": [
+      {
+        "name": "obra",
+        "prefix": "/obra",
+        "description": "Cadastro e consulta das obras exibidas no catalogo fotografico",
+        "endpoints": [
+          {
+            "method": "GET",
+            "path": "/obra/all",
+            "handler": ""
+          },
+          {
+            "method": "GET",
+            "path": "/obra/:id",
+            "handler": ""
+          },
+          {
+            "method": "POST",
+            "path": "/obra/",
+            "handler": ""
+          },
+          {
+            "method": "PUT",
+            "path": "/obra/:id",
+            "handler": ""
+          },
+          {
+            "method": "DELETE",
+            "path": "/obra/:id",
+            "handler": ""
+          }
+        ],
+        "files": {
+          "route": "src/v1/obra/router.ts",
+          "controller": "src/v1/obra/controller.ts",
+          "model": "src/v1/obra/model.ts",
+          "schemas": "src/v1/obra/schemas.ts"
+        },
+        "dataModels": ["Obra"],
+        "dependencies": ["obraimage"]
+      },
+      {
+        "name": "obraimage",
+        "prefix": "/obraimage",
+        "description": "Imagens vinculadas a obras, incluindo randomizacao e entrega de arquivo",
+        "endpoints": [
+          {
+            "method": "GET",
+            "path": "/obraimage/image/:filename",
+            "handler": ""
+          },
+          {
+            "method": "GET",
+            "path": "/obraimage/all",
+            "handler": ""
+          },
+          {
+            "method": "GET",
+            "path": "/obraimage/random",
+            "handler": ""
+          },
+          {
+            "method": "GET",
+            "path": "/obraimage/:id",
+            "handler": ""
+          },
+          {
+            "method": "POST",
+            "path": "/obraimage/:obraId",
+            "handler": ""
+          },
+          {
+            "method": "PUT",
+            "path": "/obraimage/:id",
+            "handler": ""
+          },
+          {
+            "method": "DELETE",
+            "path": "/obraimage/:id",
+            "handler": ""
+          }
+        ],
+        "files": {
+          "route": "src/v1/obraimage/router.ts",
+          "controller": "src/v1/obraimage/controller.ts",
+          "model": "src/v1/obraimage/model.ts",
+          "schemas": "src/v1/obraimage/schemas.ts"
+        },
+        "dataModels": ["ObraImage"],
+        "dependencies": ["obra"]
+      }
+    ]
+  }
+}
